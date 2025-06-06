@@ -4,6 +4,7 @@ import com.unifood.entregador.dto.EntregadorDTO;
 import com.unifood.entregador.model.Entregador;
 import com.unifood.entregador.service.EntregadorService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class EntregadorController {
     private EntregadorService entregadorService;
 
     @PostMapping
-    public ResponseEntity<Entregador> cadastrarEntregador(@RequestBody EntregadorDTO dto) {
+    public ResponseEntity<Entregador> cadastrarEntregador(@Valid @RequestBody EntregadorDTO dto) {
         Entregador e = new Entregador();
         e.setNome(dto.getNome());
         e.setVeiculo(dto.getVeiculo());
