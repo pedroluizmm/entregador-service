@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class EntregadorService {
 
+    private final EntregadorRepository entregadorRepository;
+
     @Autowired
-    private EntregadorRepository entregadorRepository;
+    public EntregadorService(EntregadorRepository entregadorRepository) {
+        this.entregadorRepository = entregadorRepository;
+    }
 
     public Entregador cadastrarEntregador(Entregador entregador) {
         return entregadorRepository.save(entregador);
