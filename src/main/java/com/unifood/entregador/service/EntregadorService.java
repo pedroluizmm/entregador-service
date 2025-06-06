@@ -19,6 +19,7 @@ public class EntregadorService {
     }
 
     public Entregador cadastrarEntregador(Entregador entregador) {
+        entregador.aoCriar();
         return entregadorRepository.save(entregador);
     }
 
@@ -26,14 +27,14 @@ public class EntregadorService {
         return entregadorRepository.findByDisponivelTrue();
     }
 
-    public Entregador atualizarDisponibilidade(Long id, Boolean disponivel) {
+    public Entregador atualizarDisponibilidade(String id, Boolean disponivel) {
         Entregador e = entregadorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Entregador n\u00e3o encontrado: " + id));
         e.setDisponivel(disponivel);
         return entregadorRepository.save(e);
     }
 
-    public Entregador buscarPorId(Long id) {
+    public Entregador buscarPorId(String id) {
         return entregadorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Entregador n\u00e3o encontrado: " + id));
     }

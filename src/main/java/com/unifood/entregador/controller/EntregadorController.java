@@ -40,7 +40,7 @@ public class EntregadorController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<Entregador> atualizarDisponibilidade(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam Boolean disponivel) {
         try {
             Entregador atualizado = entregadorService.atualizarDisponibilidade(id, disponivel);
@@ -51,7 +51,7 @@ public class EntregadorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Entregador> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Entregador> buscarPorId(@PathVariable String id) {
         try {
             Entregador e = entregadorService.buscarPorId(id);
             return ResponseEntity.ok(e);
