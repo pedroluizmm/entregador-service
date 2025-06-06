@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.unifood.entregador.model.StatusEntrega;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,7 +22,9 @@ public class AtribuicaoEntrega {
 
     private String orderId;
     private Long entregadorId;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private StatusEntrega status;
 
     private LocalDateTime atribuidoEm;
     private LocalDateTime atualizadoEm;
@@ -30,7 +34,7 @@ public class AtribuicaoEntrega {
         this.atribuidoEm = LocalDateTime.now();
         this.atualizadoEm = LocalDateTime.now();
         if (this.status == null) {
-            this.status = "PENDENTE";
+            this.status = StatusEntrega.PENDENTE;
         }
     }
 
