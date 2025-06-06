@@ -6,6 +6,7 @@ import com.unifood.entregador.dto.AtualizarStatusEntregaRequest;
 import com.unifood.entregador.model.AtribuicaoEntrega;
 import com.unifood.entregador.service.EntregaService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class EntregaController {
 
     @PostMapping("/assign")
     public ResponseEntity<AtribuirEntregaResponse> atribuirEntregador(
-            @RequestBody AtribuirEntregaRequest request) {
+            @Valid @RequestBody AtribuirEntregaRequest request) {
         try {
             AtribuicaoEntrega atrib = entregaService.atribuirEntregadorAoPedido(request.getOrderId());
             AtribuirEntregaResponse resp = new AtribuirEntregaResponse(
@@ -39,7 +40,7 @@ public class EntregaController {
     @PutMapping("/{entregaId}/status")
     public ResponseEntity<AtribuicaoEntrega> atualizarStatusEntrega(
             @PathVariable Long entregaId,
-            @RequestBody AtualizarStatusEntregaRequest request) {
+            @Valid @RequestBody AtualizarStatusEntregaRequest request) {
         try {
             AtribuicaoEntrega atualizada = entregaService.atualizarStatusEntrega(entregaId, request.getStatus());
             return ResponseEntity.ok(atualizada);
