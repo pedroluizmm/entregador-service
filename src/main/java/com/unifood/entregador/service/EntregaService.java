@@ -2,6 +2,7 @@ package com.unifood.entregador.service;
 
 import com.unifood.entregador.model.AtribuicaoEntrega;
 import com.unifood.entregador.model.Entregador;
+import com.unifood.entregador.model.StatusEntrega;
 import com.unifood.entregador.repository.AtribuicaoEntregaRepository;
 import com.unifood.entregador.repository.EntregadorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,15 +39,15 @@ public class EntregaService {
     }
 
     @Transactional
-    public AtribuicaoEntrega atualizarStatusEntrega(Long entregaId, String novoStatus) {
+    public AtribuicaoEntrega atualizarStatusEntrega(Long entregaId, StatusEntrega novoStatus) {
         AtribuicaoEntrega atrib = atribuicaoRepository.findById(entregaId)
                 .orElseThrow(() -> new EntityNotFoundException("Atribui\u00e7\u00e3o n\u00e3o encontrada: " + entregaId));
 
-        if ("EM_ROTA".equals(novoStatus)) {
-            atrib.setStatus("EM_ROTA");
+        if (novoStatus == StatusEntrega.EM_ROTA) {
+            atrib.setStatus(StatusEntrega.EM_ROTA);
             atribuicaoRepository.save(atrib);
-        } else if ("ENTREGUE".equals(novoStatus)) {
-            atrib.setStatus("ENTREGUE");
+        } else if (novoStatus == StatusEntrega.ENTREGUE) {
+            atrib.setStatus(StatusEntrega.ENTREGUE);
             atribuicaoRepository.save(atrib);
 
             Entregador entregador = entregadorRepository.findById(atrib.getEntregadorId())
@@ -63,6 +64,6 @@ public class EntregaService {
         if (!entregadorRepository.existsById(entregadorId)) {
             throw new EntityNotFoundException("Entregador n\u00e3o encontrado: " + entregadorId);
         }
-        return atribuicaoRepository.findByEntregadorIdAndStatusNot(entregadorId, "ENTREGUE");
+        return atribuicaoRepository.findByEntregadorIdAndStatusNot(entregadorId, StatusEntrega.ENTREGUE);
     }
 }
