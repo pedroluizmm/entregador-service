@@ -1,16 +1,17 @@
 package com.unifood.entregador.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "entregadores")
+@Document(collection = "entregador")
 public class Entregador {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String nome;
     private String veiculo;
@@ -20,17 +21,21 @@ public class Entregador {
     private String contaBancaria;
 
     private Boolean disponivel;
+
+    @CreatedDate
     private LocalDateTime criadoEm;
+
+    @LastModifiedDate
     private LocalDateTime atualizadoEm;
 
     public Entregador() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -106,17 +111,9 @@ public class Entregador {
         this.atualizadoEm = atualizadoEm;
     }
 
-    @PrePersist
     public void aoCriar() {
-        this.criadoEm = LocalDateTime.now();
-        this.atualizadoEm = LocalDateTime.now();
         if (this.disponivel == null) {
             this.disponivel = true;
         }
-    }
-
-    @PreUpdate
-    public void aoAtualizar() {
-        this.atualizadoEm = LocalDateTime.now();
     }
 }

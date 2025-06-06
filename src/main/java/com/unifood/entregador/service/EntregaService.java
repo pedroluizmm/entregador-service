@@ -8,7 +8,6 @@ import com.unifood.entregador.repository.EntregadorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class EntregaService {
         this.atribuicaoRepository = atribuicaoRepository;
     }
 
-    @Transactional
     public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
         Entregador entregador = entregadorRepository.findByDisponivelTrue()
                 .stream()
@@ -43,8 +41,7 @@ public class EntregaService {
         return salva;
     }
 
-    @Transactional
-    public AtribuicaoEntrega atualizarStatusEntrega(Long entregaId, StatusEntrega novoStatus) {
+    public AtribuicaoEntrega atualizarStatusEntrega(String entregaId, StatusEntrega novoStatus) {
         AtribuicaoEntrega atrib = atribuicaoRepository.findById(entregaId)
                 .orElseThrow(() -> new EntityNotFoundException("Atribui\u00e7\u00e3o n\u00e3o encontrada: " + entregaId));
 
@@ -65,7 +62,7 @@ public class EntregaService {
         return atrib;
     }
 
-    public List<AtribuicaoEntrega> listarAtribuicoesPorEntregador(Long entregadorId) {
+    public List<AtribuicaoEntrega> listarAtribuicoesPorEntregador(String entregadorId) {
         if (!entregadorRepository.existsById(entregadorId)) {
             throw new EntityNotFoundException("Entregador n\u00e3o encontrado: " + entregadorId);
         }

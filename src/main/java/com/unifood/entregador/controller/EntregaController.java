@@ -39,7 +39,7 @@ public class EntregaController {
 
     @PutMapping("/{entregaId}/status")
     public ResponseEntity<AtribuicaoEntrega> atualizarStatusEntrega(
-            @PathVariable Long entregaId,
+            @PathVariable String entregaId,
             @Valid @RequestBody AtualizarStatusEntregaRequest request) {
         try {
             AtribuicaoEntrega atualizada = entregaService.atualizarStatusEntrega(entregaId, request.getStatus());
@@ -53,7 +53,7 @@ public class EntregaController {
 
     @GetMapping("/deliverer/{entregadorId}/assignments")
     public ResponseEntity<List<AtribuicaoEntrega>> listarAtribuicoesPorEntregador(
-            @PathVariable Long entregadorId) {
+            @PathVariable String entregadorId) {
         try {
             List<AtribuicaoEntrega> lista = entregaService.listarAtribuicoesPorEntregador(entregadorId);
             return ResponseEntity.ok(lista);
