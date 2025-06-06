@@ -15,11 +15,16 @@ import java.util.List;
 @Service
 public class EntregaService {
 
-    @Autowired
-    private EntregadorRepository entregadorRepository;
+    private final EntregadorRepository entregadorRepository;
+
+    private final AtribuicaoEntregaRepository atribuicaoRepository;
 
     @Autowired
-    private AtribuicaoEntregaRepository atribuicaoRepository;
+    public EntregaService(EntregadorRepository entregadorRepository,
+                          AtribuicaoEntregaRepository atribuicaoRepository) {
+        this.entregadorRepository = entregadorRepository;
+        this.atribuicaoRepository = atribuicaoRepository;
+    }
 
     @Transactional
     public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
