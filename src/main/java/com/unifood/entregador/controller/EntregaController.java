@@ -62,4 +62,10 @@ public class EntregaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/deliverer/active")
+    public ResponseEntity<List<AtribuicaoEntrega>> listarEntregasAtivas() {
+        List<AtribuicaoEntrega> lista = entregaService.listarEntregasAtivas();
+        return ResponseEntity.ok(lista);
+    }
 }
