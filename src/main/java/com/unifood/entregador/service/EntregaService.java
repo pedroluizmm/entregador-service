@@ -5,7 +5,8 @@ import com.unifood.entregador.model.Entregador;
 import com.unifood.entregador.model.StatusEntrega;
 import com.unifood.entregador.repository.AtribuicaoEntregaRepository;
 import com.unifood.entregador.repository.EntregadorRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.unifood.entregador.client.PedidoClient;
+import com.unifood.entregador.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,15 @@ public class EntregaService {
 
     private final AtribuicaoEntregaRepository atribuicaoRepository;
 
+    private final PedidoClient pedidoClient;
+
     @Autowired
     public EntregaService(EntregadorRepository entregadorRepository,
-                          AtribuicaoEntregaRepository atribuicaoRepository) {
+                          AtribuicaoEntregaRepository atribuicaoRepository,
+                          PedidoClient pedidoClient) {
         this.entregadorRepository = entregadorRepository;
         this.atribuicaoRepository = atribuicaoRepository;
+        this.pedidoClient = pedidoClient;
     }
 
     public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
@@ -39,12 +44,21 @@ public class EntregaService {
         atrib.setEntregadorId(entregador.getId());
         atrib.aoCriar();
         AtribuicaoEntrega salva = atribuicaoRepository.save(atrib);
+        try {
+            pedidoClient.associarEntregador(orderId, entregador.getId());
+        } catch (Exception ex) {
+            // se falhar, desfaz disponibilidade
+            entregador.setDisponivel(true);
+            entregadorRepository.save(entregador);
+            atribuicaoRepository.deleteById(salva.getId());
+            throw new IllegalStateException("Falha ao comunicar com o servi\u00e7o de pedidos", ex);
+        }
         return salva;
     }
 
     public AtribuicaoEntrega atualizarStatusEntrega(String entregaId, StatusEntrega novoStatus) {
         AtribuicaoEntrega atrib = atribuicaoRepository.findById(entregaId)
-                .orElseThrow(() -> new EntityNotFoundException("Atribui\u00e7\u00e3o n\u00e3o encontrada: " + entregaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Atribui\u00e7\u00e3o n\u00e3o encontrada: " + entregaId));
 
         if (novoStatus == StatusEntrega.EM_ROTA) {
             atrib.setStatus(StatusEntrega.EM_ROTA);
@@ -54,7 +68,7 @@ public class EntregaService {
             atribuicaoRepository.save(atrib);
 
             Entregador entregador = entregadorRepository.findById(atrib.getEntregadorId())
-                    .orElseThrow(() -> new EntityNotFoundException("Entregador n\u00e3o encontrado: " + atrib.getEntregadorId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Entregador n\u00e3o encontrado: " + atrib.getEntregadorId()));
             entregador.setDisponivel(true);
             entregadorRepository.save(entregador);
         } else {
@@ -65,7 +79,7 @@ public class EntregaService {
 
     public List<AtribuicaoEntrega> listarAtribuicoesPorEntregador(String entregadorId) {
         if (!entregadorRepository.existsById(entregadorId)) {
-            throw new EntityNotFoundException("Entregador n\u00e3o encontrado: " + entregadorId);
+            throw new ResourceNotFoundException("Entregador n\u00e3o encontrado: " + entregadorId);
         }
         return atribuicaoRepository.findByEntregadorIdAndStatusNot(entregadorId, StatusEntrega.ENTREGUE);
     }
