@@ -29,10 +29,11 @@ public class EntregaService {
     }
 
     public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
-        Entregador entregador = entregadorRepository.findByDisponivelTrue()
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Nenhum entregador disponível"));
+        List<Entregador> disponiveis = entregadorRepository.findByDisponivelTrue();
+        if (disponiveis.isEmpty()) {
+            throw new IllegalStateException("Nenhum entregador disponível");
+        }
+        Entregador entregador = disponiveis.get(new java.util.Random().nextInt(disponiveis.size()));
 
         entregador.setDisponivel(false);
         entregadorRepository.save(entregador);

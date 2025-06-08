@@ -24,6 +24,7 @@ Microserviço responsável por gerenciar entregadores e atribuições de entrega
 - `GET /api/entregadores/disponiveis` – lista entregadores disponíveis
 - `PUT /api/entregadores/{id}/status?disponivel={true|false}` – atualiza disponibilidade
 - `GET /api/entregadores/{id}` – busca entregador por ID
+ - `POST /api/entregadores/assign/{orderId}` – seleciona aleatoriamente um entregador disponível para o pedido indicado e retorna `{id_entregador, id_pedido}`
 - `POST /api/deliveries/assign` – atribui entregador ao pedido
 - `PUT /api/deliveries/{entregaId}/status` – atualiza status da entrega
 - `GET /api/deliveries/deliverer/{entregadorId}/assignments` – lista entregas pendentes para um entregador

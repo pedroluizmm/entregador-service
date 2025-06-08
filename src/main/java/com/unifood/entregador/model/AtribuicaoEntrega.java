@@ -43,6 +43,7 @@ public class AtribuicaoEntrega {
         this.orderId = orderId;
     }
 
+
     public String getEntregadorId() {
         return entregadorId;
     }
