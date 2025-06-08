@@ -77,7 +77,7 @@ public class AtribuicaoEntrega {
 
     public void aoCriar() {
         if (this.status == null) {
-            this.status = StatusEntrega.PENDENTE;
+            this.status = StatusEntrega.EM_ROTA;
         }
     }
 }

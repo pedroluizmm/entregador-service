@@ -7,5 +7,5 @@
 - `POST /api/entregadores/assign/{orderId}/{valorOrderId}` – atribui aleatoriamente um entregador ao pedido informando também o valor do pedido  
 - `POST /api/deliveries/assign` – atribui entregador ao pedido  
 - `PUT /api/deliveries/{entregaId}/status` – atualiza status da entrega  
-- `GET /api/deliveries/deliverer/{entregadorId}/assignments` – lista entregas pendentes para um entregador
+- `GET /api/deliveries/deliverer/{entregadorId}/assignments` – lista entregas em rota para um entregador
 
