@@ -16,9 +16,7 @@ import java.util.List;
 public class EntregaService {
 
     private final EntregadorRepository entregadorRepository;
-
     private final AtribuicaoEntregaRepository atribuicaoRepository;
-
     private final PedidoClient pedidoClient;
 
     @Autowired
@@ -34,7 +32,7 @@ public class EntregaService {
         Entregador entregador = entregadorRepository.findByDisponivelTrue()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Nenhum entregador dispon\u00edvel"));
+                .orElseThrow(() -> new IllegalStateException("Nenhum entregador disponível"));
 
         entregador.setDisponivel(false);
         entregadorRepository.save(entregador);
@@ -51,35 +49,37 @@ public class EntregaService {
             entregador.setDisponivel(true);
             entregadorRepository.save(entregador);
             atribuicaoRepository.deleteById(salva.getId());
-            throw new IllegalStateException("Falha ao comunicar com o servi\u00e7o de pedidos", ex);
+            throw new IllegalStateException("Falha ao comunicar com o serviço de pedidos", ex);
         }
         return salva;
     }
 
     public AtribuicaoEntrega atualizarStatusEntrega(String entregaId, StatusEntrega novoStatus) {
         AtribuicaoEntrega atrib = atribuicaoRepository.findById(entregaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Atribui\u00e7\u00e3o n\u00e3o encontrada: " + entregaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Atribuição não encontrada: " + entregaId));
 
         if (novoStatus == StatusEntrega.EM_ROTA) {
             atrib.setStatus(StatusEntrega.EM_ROTA);
             atribuicaoRepository.save(atrib);
+
         } else if (novoStatus == StatusEntrega.ENTREGUE) {
             atrib.setStatus(StatusEntrega.ENTREGUE);
             atribuicaoRepository.save(atrib);
 
             Entregador entregador = entregadorRepository.findById(atrib.getEntregadorId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Entregador n\u00e3o encontrado: " + atrib.getEntregadorId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Entregador não encontrado: " + atrib.getEntregadorId()));
             entregador.setDisponivel(true);
             entregadorRepository.save(entregador);
+
         } else {
-            throw new IllegalArgumentException("Status inv\u00e1lido: " + novoStatus);
+            throw new IllegalArgumentException("Status inválido: " + novoStatus);
         }
         return atrib;
     }
 
     public List<AtribuicaoEntrega> listarAtribuicoesPorEntregador(String entregadorId) {
         if (!entregadorRepository.existsById(entregadorId)) {
-            throw new ResourceNotFoundException("Entregador n\u00e3o encontrado: " + entregadorId);
+            throw new ResourceNotFoundException("Entregador não encontrado: " + entregadorId);
         }
         return atribuicaoRepository.findByEntregadorIdAndStatusNot(entregadorId, StatusEntrega.ENTREGUE);
     }
