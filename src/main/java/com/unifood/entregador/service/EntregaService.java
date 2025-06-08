@@ -37,6 +37,7 @@ public class EntregaService {
         AtribuicaoEntrega atrib = new AtribuicaoEntrega();
         atrib.setOrderId(orderId);
         atrib.setEntregadorId(entregador.getId());
+        atrib.aoCriar();
         AtribuicaoEntrega salva = atribuicaoRepository.save(atrib);
         return salva;
     }
