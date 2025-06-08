@@ -32,6 +32,12 @@ public class EntregadorController {
         return ResponseEntity.ok(criado);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Entregador>> listarTodos() {
+        List<Entregador> lista = entregadorService.listarTodos();
+        return ResponseEntity.ok(lista);
+    }
+
     @GetMapping("/disponiveis")
     public ResponseEntity<List<Entregador>> listarDisponiveis() {
         List<Entregador> lista = entregadorService.listarEntregadoresDisponiveis();
