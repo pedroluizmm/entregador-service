@@ -1,6 +1,5 @@
 package com.unifood.entregador.dto;
 
-
 import com.unifood.entregador.model.StatusEntrega;
 
 public class AtribuirEntregaResponse {
