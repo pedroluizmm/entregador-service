@@ -3,7 +3,7 @@ package com.unifood.entregador.controller;
 import com.unifood.entregador.dto.EntregadorDTO;
 import com.unifood.entregador.model.Entregador;
 import com.unifood.entregador.service.EntregadorService;
-import jakarta.persistence.EntityNotFoundException;
+import com.unifood.entregador.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +45,7 @@ public class EntregadorController {
         try {
             Entregador atualizado = entregadorService.atualizarDisponibilidade(id, disponivel);
             return ResponseEntity.ok(atualizado);
-        } catch (EntityNotFoundException ex) {
+        } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -55,7 +55,7 @@ public class EntregadorController {
         try {
             Entregador e = entregadorService.buscarPorId(id);
             return ResponseEntity.ok(e);
-        } catch (EntityNotFoundException ex) {
+        } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
     }

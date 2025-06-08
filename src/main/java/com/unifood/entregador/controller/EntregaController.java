@@ -5,7 +5,7 @@ import com.unifood.entregador.dto.AtribuirEntregaResponse;
 import com.unifood.entregador.dto.AtualizarStatusEntregaRequest;
 import com.unifood.entregador.model.AtribuicaoEntrega;
 import com.unifood.entregador.service.EntregaService;
-import jakarta.persistence.EntityNotFoundException;
+import com.unifood.entregador.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +44,7 @@ public class EntregaController {
         try {
             AtribuicaoEntrega atualizada = entregaService.atualizarStatusEntrega(entregaId, request.getStatus());
             return ResponseEntity.ok(atualizada);
-        } catch (EntityNotFoundException ex) {
+        } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().build();
@@ -57,7 +57,7 @@ public class EntregaController {
         try {
             List<AtribuicaoEntrega> lista = entregaService.listarAtribuicoesPorEntregador(entregadorId);
             return ResponseEntity.ok(lista);
-        } catch (EntityNotFoundException ex) {
+        } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
     }
