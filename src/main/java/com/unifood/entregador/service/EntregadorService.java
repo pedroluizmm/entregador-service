@@ -23,6 +23,10 @@ public class EntregadorService {
         return entregadorRepository.save(entregador);
     }
 
+    public List<Entregador> listarTodos() {
+        return entregadorRepository.findAll();
+    }
+
     public List<Entregador> listarEntregadoresDisponiveis() {
         return entregadorRepository.findByDisponivelTrue();
     }
