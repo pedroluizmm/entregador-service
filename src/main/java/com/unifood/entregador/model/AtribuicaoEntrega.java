@@ -14,6 +14,7 @@ public class AtribuicaoEntrega {
     private String id;
 
     private String orderId;
+    private String valorOrderId;
     private String entregadorId;
 
     private StatusEntrega status;
@@ -41,6 +42,14 @@ public class AtribuicaoEntrega {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getValorOrderId() {
+        return valorOrderId;
+    }
+
+    public void setValorOrderId(String valorOrderId) {
+        this.valorOrderId = valorOrderId;
     }
 
     public String getEntregadorId() {
