@@ -5,6 +5,7 @@ import com.unifood.entregador.model.Entregador;
 import com.unifood.entregador.model.StatusEntrega;
 import com.unifood.entregador.repository.AtribuicaoEntregaRepository;
 import com.unifood.entregador.repository.EntregadorRepository;
+import com.unifood.entregador.client.PedidoClient;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,15 @@ public class EntregaService {
 
     private final AtribuicaoEntregaRepository atribuicaoRepository;
 
+    private final PedidoClient pedidoClient;
+
     @Autowired
     public EntregaService(EntregadorRepository entregadorRepository,
-                          AtribuicaoEntregaRepository atribuicaoRepository) {
+                          AtribuicaoEntregaRepository atribuicaoRepository,
+                          PedidoClient pedidoClient) {
         this.entregadorRepository = entregadorRepository;
         this.atribuicaoRepository = atribuicaoRepository;
+        this.pedidoClient = pedidoClient;
     }
 
     public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
@@ -39,6 +44,15 @@ public class EntregaService {
         atrib.setEntregadorId(entregador.getId());
         atrib.aoCriar();
         AtribuicaoEntrega salva = atribuicaoRepository.save(atrib);
+        try {
+            pedidoClient.associarEntregador(orderId, entregador.getId());
+        } catch (Exception ex) {
+            // se falhar, desfaz disponibilidade
+            entregador.setDisponivel(true);
+            entregadorRepository.save(entregador);
+            atribuicaoRepository.deleteById(salva.getId());
+            throw new IllegalStateException("Falha ao comunicar com o servi\u00e7o de pedidos", ex);
+        }
         return salva;
     }
 
