@@ -44,14 +44,6 @@ public class AtribuicaoEntrega {
         this.orderId = orderId;
     }
 
-    public String getValorOrderId() {
-        return valorOrderId;
-    }
-
-    public void setValorOrderId(String valorOrderId) {
-        this.valorOrderId = valorOrderId;
-    }
-
     public String getEntregadorId() {
         return entregadorId;
     }
