@@ -70,4 +70,8 @@ public class EntregaService {
         }
         return atribuicaoRepository.findByEntregadorIdAndStatusNot(entregadorId, StatusEntrega.ENTREGUE);
     }
+
+    public List<AtribuicaoEntrega> listarEntregasAtivas() {
+        return atribuicaoRepository.findByStatusNot(StatusEntrega.ENTREGUE);
+    }
 }

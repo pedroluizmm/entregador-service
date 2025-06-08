@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface AtribuicaoEntregaRepository extends MongoRepository<AtribuicaoEntrega, String> {
     List<AtribuicaoEntrega> findByEntregadorIdAndStatusNot(String entregadorId, StatusEntrega status);
+    List<AtribuicaoEntrega> findByStatusNot(StatusEntrega status);
 }
