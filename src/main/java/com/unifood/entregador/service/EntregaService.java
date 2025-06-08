@@ -29,10 +29,6 @@ public class EntregaService {
     }
 
     public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
-        return atribuirEntregadorAoPedido(orderId);
-    }
-
-    public AtribuicaoEntrega atribuirEntregadorAoPedido(String orderId) {
         List<Entregador> disponiveis = entregadorRepository.findByDisponivelTrue();
         if (disponiveis.isEmpty()) {
             throw new IllegalStateException("Nenhum entregador disponível");
