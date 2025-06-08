@@ -1,16 +1,17 @@
 package com.unifood.entregador.dto;
 
-
 import com.unifood.entregador.model.StatusEntrega;
 
 public class AtribuirEntregaResponse {
     private String entregaId;
     private String entregadorId;
+    private String orderId;
     private StatusEntrega status;
 
-    public AtribuirEntregaResponse(String entregaId, String entregadorId, StatusEntrega status) {
+    public AtribuirEntregaResponse(String entregaId, String entregadorId, String orderId, StatusEntrega status) {
         this.entregaId = entregaId;
         this.entregadorId = entregadorId;
+        this.orderId = orderId;
         this.status = status;
     }
 
@@ -30,6 +31,13 @@ public class AtribuirEntregaResponse {
         this.entregadorId = entregadorId;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
     public StatusEntrega getStatus() {
         return status;

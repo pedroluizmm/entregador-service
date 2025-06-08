@@ -12,7 +12,6 @@ public class AtribuicaoEntrega {
 
     @Id
     private String id;
-
     private String orderId;
     private String entregadorId;
 

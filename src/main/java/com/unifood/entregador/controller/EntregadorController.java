@@ -1,7 +1,7 @@
 package com.unifood.entregador.controller;
 
+import com.unifood.entregador.dto.AtribuirEntregaResponse;
 import com.unifood.entregador.dto.EntregadorDTO;
-import com.unifood.entregador.dto.EntregadorPedidoResponse;
 import com.unifood.entregador.model.AtribuicaoEntrega;
 import com.unifood.entregador.model.Entregador;
 import com.unifood.entregador.service.EntregaService;
@@ -40,14 +40,12 @@ public class EntregadorController {
 
     @GetMapping
     public ResponseEntity<List<Entregador>> listarTodos() {
-        List<Entregador> lista = entregadorService.listarTodos();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(entregadorService.listarTodos());
     }
 
     @GetMapping("/disponiveis")
     public ResponseEntity<List<Entregador>> listarDisponiveis() {
-        List<Entregador> lista = entregadorService.listarEntregadoresDisponiveis();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(entregadorService.listarEntregadoresDisponiveis());
     }
 
     @PutMapping("/{id}/status")
@@ -55,8 +53,7 @@ public class EntregadorController {
             @PathVariable String id,
             @RequestParam Boolean disponivel) {
         try {
-            Entregador atualizado = entregadorService.atualizarDisponibilidade(id, disponivel);
-            return ResponseEntity.ok(atualizado);
+            return ResponseEntity.ok(entregadorService.atualizarDisponibilidade(id, disponivel));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
@@ -65,21 +62,22 @@ public class EntregadorController {
     @GetMapping("/{id}")
     public ResponseEntity<Entregador> buscarPorId(@PathVariable String id) {
         try {
-            Entregador e = entregadorService.buscarPorId(id);
-            return ResponseEntity.ok(e);
+            return ResponseEntity.ok(entregadorService.buscarPorId(id));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping("/assign/{orderId}")
-    public ResponseEntity<EntregadorPedidoResponse> atribuirAleatorio(
+    public ResponseEntity<AtribuirEntregaResponse> atribuirAleatorio(
             @PathVariable String orderId) {
         try {
             AtribuicaoEntrega atrib = entregaService.atribuirEntregadorAoPedido(orderId);
-            EntregadorPedidoResponse resp = new EntregadorPedidoResponse(
+            AtribuirEntregaResponse resp = new AtribuirEntregaResponse(
+                    atrib.getId(),
                     atrib.getEntregadorId(),
-                    atrib.getOrderId()
+                    atrib.getOrderId(),
+                    atrib.getStatus()
             );
             return ResponseEntity.ok(resp);
         } catch (IllegalStateException ex) {
