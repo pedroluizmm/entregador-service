@@ -72,17 +72,15 @@ public class EntregadorController {
         }
     }
 
-    @PostMapping("/assign/{orderId}/{valorOrderId}")
+    @PostMapping("/assign/{orderId}")
     public ResponseEntity<AtribuirEntregaResponse> atribuirAleatorio(
-            @PathVariable String orderId,
-            @PathVariable String valorOrderId) {
+            @PathVariable String orderId) {
         try {
-            AtribuicaoEntrega atrib = entregaService.atribuirEntregadorAoPedido(orderId, valorOrderId);
+            AtribuicaoEntrega atrib = entregaService.atribuirEntregadorAoPedido(orderId);
             AtribuirEntregaResponse resp = new AtribuirEntregaResponse(
                     atrib.getId(),
                     atrib.getEntregadorId(),
                     atrib.getOrderId(),
-                    atrib.getValorOrderId(),
                     atrib.getStatus()
             );
             return ResponseEntity.ok(resp);

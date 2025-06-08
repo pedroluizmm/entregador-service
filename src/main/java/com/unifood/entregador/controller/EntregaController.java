@@ -30,7 +30,6 @@ public class EntregaController {
                     atrib.getId(),
                     atrib.getEntregadorId(),
                     atrib.getOrderId(),
-                    atrib.getValorOrderId(),
                     atrib.getStatus()
             );
             return ResponseEntity.ok(resp);

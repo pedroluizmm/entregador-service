@@ -7,14 +7,12 @@ public class AtribuirEntregaResponse {
     private String entregaId;
     private String entregadorId;
     private String orderId;
-    private String valorOrderId;
     private StatusEntrega status;
 
-    public AtribuirEntregaResponse(String entregaId, String entregadorId, String orderId, String valorOrderId, StatusEntrega status) {
+    public AtribuirEntregaResponse(String entregaId, String entregadorId, String orderId, StatusEntrega status) {
         this.entregaId = entregaId;
         this.entregadorId = entregadorId;
         this.orderId = orderId;
-        this.valorOrderId = valorOrderId;
         this.status = status;
     }
 
@@ -40,14 +38,6 @@ public class AtribuirEntregaResponse {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
-    }
-
-    public String getValorOrderId() {
-        return valorOrderId;
-    }
-
-    public void setValorOrderId(String valorOrderId) {
-        this.valorOrderId = valorOrderId;
     }
 
     public StatusEntrega getStatus() {
