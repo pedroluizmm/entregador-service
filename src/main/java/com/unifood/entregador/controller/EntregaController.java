@@ -29,6 +29,7 @@ public class EntregaController {
             AtribuirEntregaResponse resp = new AtribuirEntregaResponse(
                     atrib.getId(),
                     atrib.getEntregadorId(),
+                    atrib.getOrderId(),
                     atrib.getStatus()
             );
             return ResponseEntity.ok(resp);

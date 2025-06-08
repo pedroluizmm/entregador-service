@@ -1,7 +1,7 @@
 package com.unifood.entregador.controller;
 
+import com.unifood.entregador.dto.AtribuirEntregaResponse;
 import com.unifood.entregador.dto.EntregadorDTO;
-import com.unifood.entregador.dto.EntregadorPedidoResponse;
 import com.unifood.entregador.model.AtribuicaoEntrega;
 import com.unifood.entregador.model.Entregador;
 import com.unifood.entregador.service.EntregaService;
@@ -73,13 +73,15 @@ public class EntregadorController {
     }
 
     @PostMapping("/assign/{orderId}")
-    public ResponseEntity<EntregadorPedidoResponse> atribuirAleatorio(
+    public ResponseEntity<AtribuirEntregaResponse> atribuirAleatorio(
             @PathVariable String orderId) {
         try {
             AtribuicaoEntrega atrib = entregaService.atribuirEntregadorAoPedido(orderId);
-            EntregadorPedidoResponse resp = new EntregadorPedidoResponse(
+            AtribuirEntregaResponse resp = new AtribuirEntregaResponse(
+                    atrib.getId(),
                     atrib.getEntregadorId(),
-                    atrib.getOrderId()
+                    atrib.getOrderId(),
+                    atrib.getStatus()
             );
             return ResponseEntity.ok(resp);
         } catch (IllegalStateException ex) {
