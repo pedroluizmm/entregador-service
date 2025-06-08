@@ -1,7 +1,10 @@
 package com.unifood.entregador.controller;
 
+import com.unifood.entregador.dto.AtribuirEntregaResponse;
 import com.unifood.entregador.dto.EntregadorDTO;
+import com.unifood.entregador.model.AtribuicaoEntrega;
 import com.unifood.entregador.model.Entregador;
+import com.unifood.entregador.service.EntregaService;
 import com.unifood.entregador.service.EntregadorService;
 import com.unifood.entregador.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
@@ -18,6 +21,9 @@ public class EntregadorController {
 
     @Autowired
     private EntregadorService entregadorService;
+
+    @Autowired
+    private EntregaService entregaService;
 
     @PostMapping
     public ResponseEntity<Entregador> cadastrarEntregador(@Valid @RequestBody EntregadorDTO dto) {
@@ -63,6 +69,25 @@ public class EntregadorController {
             return ResponseEntity.ok(e);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/assign/{orderId}/{valorOrderId}")
+    public ResponseEntity<AtribuirEntregaResponse> atribuirAleatorio(
+            @PathVariable String orderId,
+            @PathVariable String valorOrderId) {
+        try {
+            AtribuicaoEntrega atrib = entregaService.atribuirEntregadorAoPedido(orderId, valorOrderId);
+            AtribuirEntregaResponse resp = new AtribuirEntregaResponse(
+                    atrib.getId(),
+                    atrib.getEntregadorId(),
+                    atrib.getOrderId(),
+                    atrib.getValorOrderId(),
+                    atrib.getStatus()
+            );
+            return ResponseEntity.ok(resp);
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(503).build();
         }
     }
 }
