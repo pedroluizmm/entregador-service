@@ -30,6 +30,7 @@ public class AtribuirEntregaResponse {
         this.entregadorId = entregadorId;
     }
 
+
     public StatusEntrega getStatus() {
         return status;
     }
