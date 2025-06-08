@@ -40,14 +40,12 @@ public class EntregadorController {
 
     @GetMapping
     public ResponseEntity<List<Entregador>> listarTodos() {
-        List<Entregador> lista = entregadorService.listarTodos();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(entregadorService.listarTodos());
     }
 
     @GetMapping("/disponiveis")
     public ResponseEntity<List<Entregador>> listarDisponiveis() {
-        List<Entregador> lista = entregadorService.listarEntregadoresDisponiveis();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(entregadorService.listarEntregadoresDisponiveis());
     }
 
     @PutMapping("/{id}/status")
@@ -55,8 +53,7 @@ public class EntregadorController {
             @PathVariable String id,
             @RequestParam Boolean disponivel) {
         try {
-            Entregador atualizado = entregadorService.atualizarDisponibilidade(id, disponivel);
-            return ResponseEntity.ok(atualizado);
+            return ResponseEntity.ok(entregadorService.atualizarDisponibilidade(id, disponivel));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
@@ -65,8 +62,7 @@ public class EntregadorController {
     @GetMapping("/{id}")
     public ResponseEntity<Entregador> buscarPorId(@PathVariable String id) {
         try {
-            Entregador e = entregadorService.buscarPorId(id);
-            return ResponseEntity.ok(e);
+            return ResponseEntity.ok(entregadorService.buscarPorId(id));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }

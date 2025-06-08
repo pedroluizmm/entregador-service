@@ -8,3 +8,4 @@
 - `POST /api/deliveries/assign` – atribui entregador ao pedido  
 - `PUT /api/deliveries/{entregaId}/status` – atualiza status da entrega  
 - `GET /api/deliveries/deliverer/{entregadorId}/assignments` – lista entregas pendentes para um entregador
+
